@@ -28,11 +28,8 @@ IDentitySDK Sample app on IDmission GitHub Repository <br/>
 [Download IDentityMediumSDK](https://github.com/Idmission-LLC/MediumSdk2SampleDemo) - Directly links
 to the IDentityMediumSDK Sample app on IDmission GitHub Repository
 <br/>
-[Download IDentityLiteSDK](https://github.com/Idmission-LLC/LiteSdk2SampleDemo) - Directly links to
-the IDentityLiteSDK Sample app on IDmission GitHub Repository
-<br/>
-*Download IDentityVideoIDSDK (Coming soon) - Directly links to
-the IDentityVideoIDSDK Sample app on IDmission GitHub Repository*
+[Download IDentityMediumSDKWithoutModels](https://github.com/Idmission-LLC/MediumSdk2WithoutModelsSampleDemo) - Directly links
+to the IDentityMediumSDKWithoutModels Sample app on IDmission GitHub Repository
 <br/>
 
 <a href="https://documentation.idmission.com/identity/Android-SDK-2/index.html">
@@ -149,42 +146,32 @@ The main features supported in this SDK are:
     
     //IdentityFull SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-sdk:10.1.4.2.03'     
+         implementation 'com.idmission.sdk2:idmission-sdk:10.1.16.2.11'     
     }
 
     //IdentityFullWithoutModels SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-fullsdkwithoutmodels:10.1.4.2.03'     
+         implementation 'com.idmission.sdk2:idmission-fullsdkwithoutmodels:10.1.16.2.11'     
     }
     
     //IdentityMedium SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdk:10.1.4.2.03'     
+         implementation 'com.idmission.sdk2:idmission-mediumsdk:10.1.16.2.11'     
     }
 
     //IdentityMediumWithoutModels SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:10.1.4.2.03'     
-    }
-    
-    //IdentityLite SDK
-    dependencies {  
-         implementation 'com.idmission.sdk2:idmission-litesdk:10.1.4.2.03'     
-    }
-    
-    //IdentityLiteWithoutModels SDK
-    dependencies {  
-         implementation 'com.idmission.sdk2:idmission-litesdkwithoutmodels:10.1.4.2.03'     
+         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:10.1.16.2.11'     
     }
     
     //IdentityVideoID SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-videoidsdk:10.1.4.2.03'     
+         implementation 'com.idmission.sdk2:idmission-videoidsdk:10.1.16.2.11'     
     }
 
     //IdentityVideoIDWithoutModels SDK
     dependencies {  
-        implementation 'com.idmission.sdk2:idmission-videoidsdkwithoutmodels:10.1.4.2.03'     
+        implementation 'com.idmission.sdk2:idmission-videoidsdkwithoutmodels:10.1.16.2.11'     
     }
     ```
 
@@ -417,7 +404,7 @@ android {
 }
 
 dependencies {  
-    implementation 'com.idmission.sdk2:4FingerprintCaptureLib:9.5.15.1' 
+    implementation 'com.idmission.sdk2:4FingerprintCaptureLib:10.1.16.7' 
 }
 
 ```
@@ -749,21 +736,28 @@ here</a>
 
 ## SDK Flavours Supported Features
 
-|                         |  Identity SDK   |  IdentityMedium SDK   |  IdentityLite SDK   |  IdentityVideoID SDK   |
-|:-----------------------:|:---------------:|:---------------------:|:-------------------:|:----------------------:|
-|                         | <B>Identity SDK | <B>IdentityMedium SDK | <B>IdentityLite SDK | <B>IdentityVideoID SDK |
-|     Document Detect     |    On Device    |       On Device       |      On Device      |       On Device        |
-|    Rotate, crop etc.    |    On Device    |       On Server       |      On Server      |       On Device        |
-|    Document Realness    |    On Device    |       On Device       |      On Server      |       On Device        |
-| Document Classification |    On Device    |       On Server       |      On Server      |       On Device        |
-|   MRZ/Barcode reading   |    On Device    |       On Device       |      On Server      |       On Device        |
-|     OCR from front      |    On Server    |       On Server       |      On Server      |       On Server        |
-|       Face detect       |    On Device    |       On Device       |      On Device      |       On Device        |
-|     Liveness detect     |    On Device    |       On Device       |      On Device      |       On Device        |
-| Detect hats and glasses |    On Device    |       On Server       |      On Server      |       On Device        |
-|        Video ID         |       N/A       |          N/A          |         N/A         |       On Device        |
+|                         |  Identity SDK   |  IdentityMedium SDK   |  IdentityVideoID SDK   |
+|:-----------------------:|:---------------:|:---------------------:|:----------------------:|
+|                         | <B>Identity SDK | <B>IdentityMedium SDK | <B>IdentityVideoID SDK |
+|     Document Detect     |    On Device    |       On Device       |       On Device        |
+|    Rotate, crop etc.    |    On Device    |       On Server       |       On Device        |
+|    Document Realness    |    On Device    |       On Device       |       On Device        |
+| Document Classification |    On Device    |       On Server       |       On Device        |
+|   MRZ/Barcode reading   |    On Device    |       On Device       |       On Device        |
+|     OCR from front      |    On Server    |       On Server       |       On Server        |
+|       Face detect       |    On Device    |       On Device       |       On Device        |
+|     Liveness detect     |    On Device    |       On Device       |       On Device        |
+| Detect hats and glasses |    On Device    |       On Server       |       On Device        |
+|        Video ID         |       N/A       |          N/A          |       On Device        |
 
 ## SDK Version History
+#### v10.1.16.2.11 (25th August 2025)
+* Updated new encryption and decryption logic.
+* Ability to submit request on custom product.
+* Updated Google Play Store policy requirements (Android 35).
+* Updated native .so with 16KB page size as per Google Play Store policy.
+* UI improvement related to the Continue button.
+
 #### v10.1.4.2.03 (26th February 2025)
 * Reduced the overall size of SDK.
 * Added configuration options to change the sequence of ID and Selfie capture.

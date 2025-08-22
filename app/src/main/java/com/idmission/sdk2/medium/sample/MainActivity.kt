@@ -19,15 +19,14 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
-//    [{"LoginId":"ev_integ_65494","ClientSecret":"PHMMh3PUPaoO6HIMnfYMYA2CBh5LmPtt","ClientId":"65494","ProductId":"920","MerchantId":45805,"PRODUCT_NAME":"Identity_Validation_and_Face_Matching","URL":"https://kyc.idmission.com/IDS/service/integ/idm/thirdparty/upsert","Password":"HWTe#11145$"}]
-    var apiBaseUrl = "https://api.idmission.com/"
+    var apiBaseUrl = "https://apidemo.idmission.com/"
     //TODO update your loginID, password, MerchantID and productID
-    var loginID = "ev_integ_65494"
-    var password = "HWTe#11145$"
-    var merchantID: Long = 45805
-    var productID = "4130"
-    var clientSecret = "PHMMh3PUPaoO6HIMnfYMYA2CBh5LmPtt"
-    var clientID = "65494"
+    var loginID = ""
+    var password = ""
+    var merchantID: Long = 19592
+    var productID = ""
+    var clientSecret = ""
+    var clientID = ""
     var productName = "Identity_Validation_and_Face_Matching"
     var lang = "EN"
     var isSDKinit = false
