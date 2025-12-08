@@ -146,32 +146,32 @@ The main features supported in this SDK are:
     
     //IdentityFull SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-sdk:10.1.16.2.11'     
+         implementation 'com.idmission.sdk2:idmission-sdk:10.1.24.2.04'     
     }
 
     //IdentityFullWithoutModels SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-fullsdkwithoutmodels:10.1.16.2.11'     
+         implementation 'com.idmission.sdk2:idmission-fullsdkwithoutmodels:10.1.24.2.04'     
     }
     
     //IdentityMedium SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdk:10.1.16.2.11'     
+         implementation 'com.idmission.sdk2:idmission-mediumsdk:10.1.24.2.04'     
     }
 
     //IdentityMediumWithoutModels SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:10.1.16.2.11'     
+         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:10.1.24.2.04'     
     }
     
     //IdentityVideoID SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-videoidsdk:10.1.16.2.11'     
+         implementation 'com.idmission.sdk2:idmission-videoidsdk:10.1.24.2.04'     
     }
 
     //IdentityVideoIDWithoutModels SDK
     dependencies {  
-        implementation 'com.idmission.sdk2:idmission-videoidsdkwithoutmodels:10.1.16.2.11'     
+        implementation 'com.idmission.sdk2:idmission-videoidsdkwithoutmodels:10.1.24.2.04'     
     }
     ```
 
@@ -326,7 +326,7 @@ android {
 }
 
 dependencies {  
-     implementation 'com.idmission.sdk2:signatureLib:10.01.04.1'    
+     implementation 'com.idmission.sdk2:signatureLib:10.01.22.2'    
 }
 
 ```
@@ -751,6 +751,17 @@ here</a>
 |        Video ID         |       N/A       |          N/A          |       On Device        |
 
 ## SDK Version History
+#### v10.1.24.2.04 (08th December 2025)
+* Added event logging capability within the SDK
+* Security Enhancements
+* Updated the SDK to ensure Error Code 31 is no longer shown to end users
+* Removal of NFC passport scanning functionality from Full SDK version
+* Removal of ImageLabeling module in Medium SDK
+* Enabled more efficient multi-document workflows in custom product
+
+#### v10.1.18.2.01 (11th November 2025)
+* Updated the default maximum allowed fake face capture count from 15 to 10.
+
 #### v10.1.16.2.11 (25th August 2025)
 * Updated new encryption and decryption logic.
 * Ability to submit request on custom product.
