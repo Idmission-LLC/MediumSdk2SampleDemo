@@ -146,32 +146,32 @@ The main features supported in this SDK are:
     
     //IdentityFull SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-sdk:10.1.24.2.04'     
+         implementation 'com.idmission.sdk2:idmission-sdk:11.1.01.2.04'     
     }
 
     //IdentityFullWithoutModels SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-fullsdkwithoutmodels:10.1.24.2.04'     
+         implementation 'com.idmission.sdk2:idmission-fullsdkwithoutmodels:11.1.01.2.04'     
     }
     
     //IdentityMedium SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdk:10.1.24.2.04'     
+         implementation 'com.idmission.sdk2:idmission-mediumsdk:11.1.01.2.04'     
     }
 
     //IdentityMediumWithoutModels SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:10.1.24.2.04'     
+         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:11.1.01.2.04'     
     }
     
     //IdentityVideoID SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-videoidsdk:10.1.24.2.04'     
+         implementation 'com.idmission.sdk2:idmission-videoidsdk:11.1.01.2.04'     
     }
 
     //IdentityVideoIDWithoutModels SDK
     dependencies {  
-        implementation 'com.idmission.sdk2:idmission-videoidsdkwithoutmodels:10.1.24.2.04'     
+        implementation 'com.idmission.sdk2:idmission-videoidsdkwithoutmodels:11.1.01.2.04'     
     }
     ```
 
@@ -326,7 +326,7 @@ android {
 }
 
 dependencies {  
-     implementation 'com.idmission.sdk2:signatureLib:10.01.22.2'    
+     implementation 'com.idmission.sdk2:signatureLib:10.01.25.5'    
 }
 
 ```
@@ -348,7 +348,34 @@ Signature Capture Parameters
 | :---: |:--------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
 |<B>Parameter | <B>Type        |                                                                                                          <B>Description                                                                                                          |
 | activityContext|    Context     |                                                                                                    Instance of your Activity                                                                                                     |
-| captureSignatureConfig|   JSONObject   | { "signature_capture_background": "N", "signature_title_label_message": "Sign 1", "signature_clear_btn_label_message": "clear 1", "signature_done_btn_label_message": "done 1", "signature_capture_detect_coordinates": "true" } |
+| captureSignatureConfig|   JSONObject   | {
+          "signature_capture_screen_background_color": "#FFFFFF",
+          "signature_capture_screen_box_border_color": "#000000",
+
+          "signature_stroke_color": "#0000FF",
+          "signature_stroke_size": "20",
+
+          "signature_title_text": "Please Sign Below",
+          "signature_title_text_color": "#0000FF",
+          "signature_title_text_font": "font/custom_font.ttf",
+          "signature_title_text_font_size": "20",
+        
+          "signature_done_btn_text": "Done 1",
+          "signature_done_btn_text_color": "#FFFFFF",
+          "signature_done_btn_text_font_size": "20",
+          "signature_done_btn_text_font": "font/custom_font.ttf",
+          "signature_done_btn_background": "done_button",
+        
+          "signature_clear_btn_text": "Clear 1",
+          "signature_clear_btn_text_color": "#FF0000",
+          "signature_clear_btn_text_font_size": "20",
+          "signature_clear_btn_text_font": "font/custom_font.ttf",
+          "signature_clear_btn_background": "cancel_button",
+        
+          "signature_back_btn_tint_color": "#FF0000",
+          "signature_back_btn_image": "back_cancel_arrow",
+          
+        } 
 
 4. You may now use the library. Example usage below:
 
@@ -361,16 +388,39 @@ class LaunchActivity : Activity() {
         
         //SDK signature call
         signatureCapture.setOnClickListener{
-        var doneBtnText = getString(R.string.done)
-            var cancelBtnText = getString(R.string.clear)
-            var signTitle = getString(R.string.sign_title)
-
-            SignatureSDK.captureSignature(this@LaunchActivity, JSONObject("{ " +
-                "\"signature_capture_background\": “N”, \"signature_title_label_message\": ${signTitle}, " +
-                "\"signature_clear_btn_label_message\": ${cancelBtnText}, " +
-                "\"signature_done_btn_label_message\": ${doneBtnText}, " +
-                "\"signature_capture_detect_coordinates\": \"true\" }"))
-        }
+           var doneBtnText = getString(R.string.done)
+              var cancelBtnText = getString(R.string.clear)
+              var signTitle = getString(R.string.sign_title)
+    
+              SignatureSDK.captureSignature(this@LaunchActivity, JSONObject("{
+                   "signature_capture_screen_background_color": "#FFFFFF",
+                   "signature_capture_screen_box_border_color": "#000000",
+      
+                   "signature_stroke_color": "#0000FF",
+                   "signature_stroke_size": "20",
+    
+                   "signature_title_text": "Please Sign Below",
+                   "signature_title_text_color": "#0000FF",
+                   "signature_title_text_font": "font/custom_font.ttf",
+                   "signature_title_text_font_size": "20",
+            
+                   "signature_done_btn_text": "Done 1",
+                   "signature_done_btn_text_color": "#FFFFFF",
+                   "signature_done_btn_text_font_size": "20",
+                   "signature_done_btn_text_font": "font/custom_font.ttf",
+                   "signature_done_btn_background": "done_button",
+            
+                   "signature_clear_btn_text": "Clear 1",
+                   "signature_clear_btn_text_color": "#FF0000",
+                   "signature_clear_btn_text_font_size": "20",
+                   "signature_clear_btn_text_font": "font/custom_font.ttf",
+                   "signature_clear_btn_background": "cancel_button",
+            
+                   "signature_back_btn_tint_color": "#FF0000",
+                   "signature_back_btn_image": "back_cancel_arrow"
+              
+               }"))
+            }
         
 
     // Signature result is received in onActivityResult and set this result to SDK 2.0 Api setSignatureData  
@@ -751,6 +801,10 @@ here</a>
 |        Video ID         |       N/A       |          N/A          |       On Device        |
 
 ## SDK Version History
+#### v11.1.01.2.04 (15th January 2026)
+* Server-Side Autofill Implementation
+* UI Enhancements to support additional options for customizations.
+
 #### v10.1.24.2.04 (08th December 2025)
 * Added event logging capability within the SDK
 * Security Enhancements
