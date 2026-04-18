@@ -63,17 +63,53 @@ The main features supported in this SDK are:
 * <a href="https://documentation.idmission.com/identity/Android-SDK-2/-i-dentity--s-d-k/com.idmission.sdk2.identityproofing/-identity-proofing-s-d-k/final-submit.html">
   Final Submit</a><br/><br/>
 
+### Technical Prerequisites
+
+Before integrating the SDK, ensure your environment meets the following requirements:
+
+| Requirement | Value |
+| :--- | :--- |
+| **Minimum SDK Version** | API Level 26 (Android 8.0) |
+| **Target/Compile SDK Version** | API Level 36 |
+| **Java Version** | Java 17 |
+| **Kotlin Version** | 2.2.0+ |
+| **Build System** | Gradle (Groovy or Kotlin DSL) |
+
+
+## Android Manifest Permissions
+
+The SDK requires the following permissions and features to be declared in your `AndroidManifest.xml`:
+
+```xml
+<!-- Hardware Features -->
+<uses-feature android:name="android.hardware.camera.any" />
+<uses-feature android:name="android.hardware.nfc" android:required="false" />
+
+<!-- Required Permissions -->
+<uses-permission android:name="android.permission.INTERNET" />
+<uses-permission android:name="android.permission.CAMERA" />
+<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+<uses-permission android:name="android.permission.VIBRATE" />
+<uses-permission android:name="android.permission.WAKE_LOCK" />
+
+<!-- Optional/Feature Specific Permissions -->
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
+<uses-permission android:name="android.permission.NFC" />
+```
+
 ## Getting Started
 
 ### 1. Please contact to sales@idmission.com for Login Credentials, which you will later pass to the SDK.
 
-### 2.1. (Groovy) Go to your **project-level** build.gradle file, and add the following in the
+### 2.1. (Groovy) Go to your **project-level** build.gradle file, and add the following in the `allprojects` block:
 
     ```
     allprojects {  
         repositories {  
             google()  
-            jcenter()  
+            mavenCentral()  
             // important stuff below  
             maven {
                 url "https://gitlab.idmission.com/api/v4/projects/220/packages/maven"
@@ -91,7 +127,7 @@ The main features supported in this SDK are:
         }  
     }
     ```
-### 2.2. (Kotlin DSL) Go to your **project-level** settings.gradle.kts file, and add the following in the
+### 2.2. (Kotlin DSL) Go to your **project-level** settings.gradle.kts file, and add the following:
 
 ```
    pluginManagement {
@@ -130,48 +166,58 @@ The main features supported in this SDK are:
 ```
 
 
-### 3. In your **app-level** build.gradle file, add the following:
+### 3. In your **app-level** build.gradle (or build.gradle.kts) file, add the following:
 
     ```
     android {  
-        // Java 8 is required for CameraX  
+        // Java 17 is required for the latest CameraX and SDK features
         compileOptions {  
-            sourceCompatibility JavaVersion.VERSION_1_8  
-            targetCompatibility JavaVersion.VERSION_1_8  
+            sourceCompatibility JavaVersion.VERSION_17  
+            targetCompatibility JavaVersion.VERSION_17  
         }  
         kotlinOptions {  
-            jvmTarget = '1.8'  
+            jvmTarget = "17"  
         }  
-    }
-    
-    //IdentityFull SDK
-    dependencies {  
-         implementation 'com.idmission.sdk2:idmission-sdk:11.1.01.2.04'     
-    }
-
-    //IdentityFullWithoutModels SDK
-    dependencies {  
-         implementation 'com.idmission.sdk2:idmission-fullsdkwithoutmodels:11.1.01.2.04'     
-    }
-    
-    //IdentityMedium SDK
-    dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdk:11.1.01.2.04'     
-    }
-
-    //IdentityMediumWithoutModels SDK
-    dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:11.1.01.2.04'     
     }
     
     //IdentityVideoID SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-videoidsdk:11.1.01.2.04'     
+         implementation 'com.idmission.sdk2:idmission-videoidsdk:11.1.5.2.29'     
     }
 
     //IdentityVideoIDWithoutModels SDK
     dependencies {  
-        implementation 'com.idmission.sdk2:idmission-videoidsdkwithoutmodels:11.1.01.2.04'     
+        implementation 'com.idmission.sdk2:idmission-videoidsdkwithoutmodels:11.1.5.2.29'     
+    }
+
+    //IdentityMedium SDK
+    dependencies {  
+         implementation 'com.idmission.sdk2:idmission-mediumsdk:11.1.07.2.20'     
+    }
+
+    //IdentityMediumWithoutModels SDK
+    dependencies {  
+         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:11.1.07.2.20'     
+    }
+    
+    //IdentityLite SDK
+    dependencies {  
+         implementation 'com.idmission.sdk2:idmission-litesdk:11.1.07.2.20'     
+    }
+
+    //IdentityLiteWithoutModels SDK
+    dependencies {  
+         implementation 'com.idmission.sdk2:idmission-litesdkwithoutmodels:11.1.07.2.20'     
+    }
+    
+    //IdentityLiveness SDK
+    dependencies {  
+    implementation 'com.idmission.sdk2:idmission-livenesssdk:11.1.07.2.20'     
+    }
+
+    //IdentityLivenessWithoutModels SDK
+    dependencies {  
+        implementation 'com.idmission.sdk2:idmission-livenesssdkwithoutmodels:11.1.07.2.20'     
     }
     ```
 
@@ -245,110 +291,112 @@ The following details are the response parameters
 ```
 
 ### 7. You may now use the library. Example usage below:
-        ```
-        class LaunchActivity : Activity() {    
+        ```kotlin
+        class LaunchActivity : AppCompatActivity() {    
         
-            private val launcher = IdMissionCaptureLauncher()    
-             var apiBaseUrl = "https://api.idmission.com/"
+             private var apiBaseUrl = "https://api.idmission.com/"
+             private val enableDebug = false
+             private val enableGPS = true
+             
+             // 1. Initialize the launcher to receive results
+             private val idMissionLauncher = registerForActivityResult(
+                 IdMissionCaptureLauncher()
+             ) { result ->
+                 // Handle the capture result here
+                 if (result != null) {
+                    // do whatever you want with the data!
+                 }
+             }
             
             override fun onCreate(savedInstanceState: Bundle?) {  
                 super.onCreate(savedInstanceState)  
                 setContentView(R.layout.activity_launch)
                 
-                //SDK initialize call
-                init_button.setOnClickListener{
-                    CoroutineScope(Dispatchers.Main).launch {
-                        var response: Response<InitializeResponse>
-                        withContext(Dispatchers.IO) {
+                // 2. SDK initialize call (Recommended to do this early)
+                init_button.setOnClickListener {
+                    lifecycleScope.launch {
+                        val response = withContext(Dispatchers.IO) {
                             // Generate a token as described in the 'Generate Access Token' section.
-                            response = IdentityProofingSDK.initialize(
+                            IdentityProofingSDK.initialize(
                                 applicationContext, 
                                 apiBaseUrl = apiBaseUrl, 
                                 enableDebug = enableDebug,
                                 enableGPS = enableGPS,
-                                sdkCustomizationOptions = SDKCustomizationOptions(
-                                    language = LANGUAGE
-                                        .valueOf("EN")
-                                ),
-                                accessToken = accessTokenValue,
+                                sdkCustomizationOptions = SDKCustomizationOptions(language = "EN"),
+                                accessToken = "YOUR_ACCESS_TOKEN"
                             )
                         }
+                        // Handle initialization response
+                    }
                 }
                 
-            //Call Enroll Service 
+                // 3. Launch a service (e.g., ID Validation & Enrollment)
                 someButton.setOnClickListener {
                     IdentityProofingSDK.idValidationAndcustomerEnroll(
                         this,
-                        uniqueNumber = uniqueNumber.text.toString()) 
+                        uniqueNumber = "UNIQUE_ID_123"
+                    ) 
                 }  
                 
-                // finalSubmit call for submit data to the server
+                // 4. Final submit call to send data to the server
                 submitDataButton.setOnClickListener {
-                    CoroutineScope(Dispatchers.Main).launch {
-                        IdentityProofingSDK.finalSubmit(
-                            applicationContext
-                        )
+                    lifecycleScope.launch {
+                        IdentityProofingSDK.finalSubmit(applicationContext)
                     }
                 }  
-             
-        
-            // capture result is received in onActivityResult    
-            override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {  
-                data ?: return  
-                if (requestCode != IdMissionCaptureLauncher.CAPTURE_REQUEST_CODE) return  
-                val processedCaptures = data.extras?.getParcelableArray(IdMissionCaptureLauncher.EXTRA_PROCESSED_CAPTURES)
-                // do whatever you want with the data!  
-            } 
+            }
+        }
         ```
-
 
 Additional supported features
 
 * <a href="./-i-dentity--s-d-k/com.idmission.sdk2.identityproofing/-identity-proofing-s-d-k/document-capture.html">
   Document Capture</a><br/>
+* <a href="./-i-dentity--s-d-k/com.idmission.sdk2.identityproofing/-identity-proofing-s-d-k/voice-capture.html">
+  Voice Capture</a><br/>
 * Signature Capture<br/>
 * Four Fingerprint Capture<br/><br/>
+
+
 
 ## Getting Started for Signature Capture
 
 1. In your **app-level** build.gradle file, add the following:
 
-```
-android {  
-    // Java 8 is required for CameraX  
-    compileOptions {  
-        sourceCompatibility JavaVersion.VERSION_1_8  
-        targetCompatibility JavaVersion.VERSION_1_8  
-    }  
-    kotlinOptions {  
-        jvmTarget = '1.8'  
-    }  
-}
-
-dependencies {  
-     implementation 'com.idmission.sdk2:signatureLib:10.01.25.5'    
-}
-
-```
-
+    ```
+    android {  
+        // Java 17 is required for latest SDK features
+        compileOptions {  
+            sourceCompatibility JavaVersion.VERSION_17  
+            targetCompatibility JavaVersion.VERSION_17  
+        }  
+        kotlinOptions {  
+            jvmTarget = "17"  
+        }  
+    }
+    
+    dependencies {  
+         implementation 'com.idmission.sdk2:signatureLib:11.01.07.04'    
+    }
+    
+    ```
 2. Sync your project with Gradle
 3. To capture a signature, use the following code.
+    ```
+    SignatureSDK.captureSignature(Activity activityContext)
+    
+    SignatureSDK.captureSignature(
+        Activity activityContext, 
+        JSONObject captureSignatureConfig)
+    ```
 
-```
-SignatureSDK.captureSignature(Activity activityContext)
+   Signature Capture Parameters
 
-SignatureSDK.captureSignature(
-    Activity activityContext, 
-    JSONObject captureSignatureConfig)
-```
-
-Signature Capture Parameters
-
-|Parameter |      Type      |                                                                                                           Description                                                                                                            |
-| :---: |:--------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-|<B>Parameter | <B>Type        |                                                                                                          <B>Description                                                                                                          |
-| activityContext|    Context     |                                                                                                    Instance of your Activity                                                                                                     |
-| captureSignatureConfig|   JSONObject   | {
+   |Parameter |      Type      |                                                                                                           Description                                                                                                            |
+      | :---: |:--------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+   |<B>Parameter | <B>Type        |                                                                                                          <B>Description                                                                                                          |
+   | activityContext|    Context     |                                                                                                    Instance of your Activity                                                                                                     |
+   | captureSignatureConfig|   JSONObject   | {
           "signature_capture_screen_background_color": "#FFFFFF",
           "signature_capture_screen_box_border_color": "#000000",
 
@@ -377,167 +425,164 @@ Signature Capture Parameters
           
         } 
 
-4. You may now use the library. Example usage below:
-
-```
-class LaunchActivity : Activity() {    
-
-    override fun onCreate(savedInstanceState: Bundle?) {  
-        super.onCreate(savedInstanceState)  
-        setContentView(R.layout.activity_launch)
-        
-        //SDK signature call
-        signatureCapture.setOnClickListener{
-           var doneBtnText = getString(R.string.done)
-              var cancelBtnText = getString(R.string.clear)
-              var signTitle = getString(R.string.sign_title)
-    
-              SignatureSDK.captureSignature(this@LaunchActivity, JSONObject("{
-                   "signature_capture_screen_background_color": "#FFFFFF",
-                   "signature_capture_screen_box_border_color": "#000000",
-      
-                   "signature_stroke_color": "#0000FF",
-                   "signature_stroke_size": "20",
-    
-                   "signature_title_text": "Please Sign Below",
-                   "signature_title_text_color": "#0000FF",
-                   "signature_title_text_font": "font/custom_font.ttf",
-                   "signature_title_text_font_size": "20",
-            
-                   "signature_done_btn_text": "Done 1",
-                   "signature_done_btn_text_color": "#FFFFFF",
-                   "signature_done_btn_text_font_size": "20",
-                   "signature_done_btn_text_font": "font/custom_font.ttf",
-                   "signature_done_btn_background": "done_button",
-            
-                   "signature_clear_btn_text": "Clear 1",
-                   "signature_clear_btn_text_color": "#FF0000",
-                   "signature_clear_btn_text_font_size": "20",
-                   "signature_clear_btn_text_font": "font/custom_font.ttf",
-                   "signature_clear_btn_background": "cancel_button",
-            
-                   "signature_back_btn_tint_color": "#FF0000",
-                   "signature_back_btn_image": "back_cancel_arrow"
-              
-               }"))
-            }
-        
-
-    // Signature result is received in onActivityResult and set this result to SDK 2.0 Api setSignatureData  
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {  
-        data ?: return  
-        if (requestCode == SignatureConstants.SIGNATURE_CAPTURE_REQUEST_CODE) {
-            var signatureData = data?.getStringExtra("SignatureImage")
-            var signatureDataCoordinates = data?.getStringExtra("SignatureDataCoordinates")
-            IdentityProofingSDK.setSignatureData(signatureData,signatureDataCoordinates)
-        } else if (requestCode == SignatureConstants.SIGNATURE_CANCEL_RESPONSE_CODE) {
-            // cancelled by user
-            IdentityProofingSDK.setSignatureData(null,null)
-        }
-    } 
-```
+  4. You may now use the library. Example usage below:
+      ```
+      class LaunchActivity : Activity() {    
+   
+          override fun onCreate(savedInstanceState: Bundle?) {  
+              super.onCreate(savedInstanceState)  
+              setContentView(R.layout.activity_launch)
+           
+              //SDK signature call
+              signatureCapture.setOnClickListener{
+              var doneBtnText = getString(R.string.done)
+                  var cancelBtnText = getString(R.string.clear)
+                  var signTitle = getString(R.string.sign_title)
+   
+                  SignatureSDK.captureSignature(this@LaunchActivity, JSONObject("{
+                  "signature_capture_screen_background_color": "#FFFFFF",
+                  "signature_capture_screen_box_border_color": "#000000",
+     
+                  "signature_stroke_color": "#0000FF",
+                  "signature_stroke_size": "20",
+   
+                  "signature_title_text": "Please Sign Below",
+                  "signature_title_text_color": "#0000FF",
+                  "signature_title_text_font": "font/custom_font.ttf",
+                  "signature_title_text_font_size": "20",
+           
+                  "signature_done_btn_text": "Done 1",
+                  "signature_done_btn_text_color": "#FFFFFF",
+                  "signature_done_btn_text_font_size": "20",
+                  "signature_done_btn_text_font": "font/custom_font.ttf",
+                  "signature_done_btn_background": "done_button",
+           
+                  "signature_clear_btn_text": "Clear 1",
+                  "signature_clear_btn_text_color": "#FF0000",
+                  "signature_clear_btn_text_font_size": "20",
+                  "signature_clear_btn_text_font": "font/custom_font.ttf",
+                  "signature_clear_btn_background": "cancel_button",
+           
+                  "signature_back_btn_tint_color": "#FF0000",
+                  "signature_back_btn_image": "back_cancel_arrow"
+             
+              }"))
+           }
+           
+   
+          // Signature result is received in onActivityResult and set this result to SDK 2.0 Api setSignatureData  
+          override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {  
+              data ?: return  
+              if (requestCode == SignatureConstants.SIGNATURE_CAPTURE_REQUEST_CODE) {
+                  var signatureData = data?.getStringExtra("SignatureImage")
+                  var signatureDataCoordinates = data?.getStringExtra("SignatureDataCoordinates")
+                  IdentityProofingSDK.setSignatureData(signatureData,signatureDataCoordinates)
+              } else if (requestCode == SignatureConstants.SIGNATURE_CANCEL_RESPONSE_CODE) {
+                  // cancelled by user
+                  IdentityProofingSDK.setSignatureData(null,null)
+              }
+          } 
+      ```
 
 ## Getting Started for Four Fingerprint Capture
 
 1. In your **app-level** build.gradle file, add the following:
-
-```
-android {  
-    // Java 8 is required for CameraX  
-    compileOptions {  
-        sourceCompatibility JavaVersion.VERSION_1_8  
-        targetCompatibility JavaVersion.VERSION_1_8  
-    }  
-    kotlinOptions {  
-        jvmTarget = '1.8'  
-    }  
-}
-
-dependencies {  
-    implementation 'com.idmission.sdk2:4FingerprintCaptureLib:10.1.16.7' 
-}
-
-```
+    ```
+    android {  
+        // Java 17 is required for latest SDK features
+        compileOptions {  
+            sourceCompatibility JavaVersion.VERSION_17  
+            targetCompatibility JavaVersion.VERSION_17  
+        }  
+        kotlinOptions {  
+            jvmTarget = "17"  
+        }  
+    }
+    
+    dependencies {  
+        implementation 'com.idmission.sdk2:4FingerprintCaptureLib:11.01.01.01' 
+    }
+    
+    ```
 
 2. Sync your project with Gradle
 3. You may now use the library. Example usage below:
-
-```
-class LaunchActivity : Activity() {    
-
-    override fun onCreate(savedInstanceState: Bundle?) {  
-        super.onCreate(savedInstanceState)  
-        setContentView(R.layout.activity_launch)
-        
-        //capture fingerprint
-        fingerPrintCapture.setOnClickListener{
-            val indexCapture: Boolean = true
-            val middleCapture: Boolean = true
-            val ringCapture: Boolean = true
-            val babyCapture: Boolean = true
-
-            val dIndexKeep = true
-            val dMiddleKeep = true
-            val dRingKeep = true
-            val dBabyKeep = true
-
-            val captureLeftHand: Boolean = true
-            val instructionScreen: Boolean = false
-            val config = JSONObject()
-            config.put(
-                UIConfigurationParameters.CFC_PROCESS_INDEX_FINGER,
-                if (indexCapture) "Y" else "N"
-            )
-            config.put(
-                UIConfigurationParameters.CFC_PROCESS_MIDDLE_FINGER,
-                if (middleCapture) "Y" else "N"
-            )
-            config.put(
-                UIConfigurationParameters.CFC_PROCESS_RING_FINGER,
-                if (ringCapture) "Y" else "N"
-            )
-            config.put(
-                UIConfigurationParameters.CFC_PROCESS_BABY_FINGER,
-                if (babyCapture) "Y" else "N"
-            )
-            config.put(
-                UIConfigurationParameters.CFC_CAPTURE_LEFT_HAND,
-                if (captureLeftHand) "Y" else "N"
-            )
-
-            config.put(
-                UIConfigurationParameters.CFC_KEEP_INDEX_FINGER,
-                if (dIndexKeep) "Y" else "N"
-            )
-            config.put(
-                UIConfigurationParameters.CFC_KEEP_MIDDLE_FINGER,
-                if (dMiddleKeep) "Y" else "N"
-            )
-            config.put(
-                UIConfigurationParameters.CFC_KEEP_RING_FINGER,
-                if (dRingKeep) "Y" else "N"
-            )
-            config.put(
-                UIConfigurationParameters.CFC_KEEP_BABY_FINGER,
-                if (dBabyKeep) "Y" else "N"
-            )
-
-            config.put(
-                UIConfigurationParameters.CFC_SHOW_INSTRUCTION_SCREEN,
-                if (instructionScreen == true) "Y" else "N"
-            )
-            //set language for sdk capture
-            FingerPrintCaptureSDK.setLanguage(LanguageUtils.LANGUAGE.ES.toString())
-            
-            FingerPrintCaptureSDK.captureFourFingerprint(this@IDCaptureActivity,
-                config
-            ) { resultMap, response -> //set 4fingerPrintData in to the sdk 2.0
-                IdentityProofingSDK.set4FingerPrintData(resultMap)
-            }
-        }
-
+    ```
+    class LaunchActivity : Activity() {    
     
-```
+        override fun onCreate(savedInstanceState: Bundle?) {  
+            super.onCreate(savedInstanceState)  
+            setContentView(R.layout.activity_launch)
+            
+            //capture fingerprint
+            fingerPrintCapture.setOnClickListener{
+                val indexCapture: Boolean = true
+                val middleCapture: Boolean = true
+                val ringCapture: Boolean = true
+                val babyCapture: Boolean = true
+    
+                val dIndexKeep = true
+                val dMiddleKeep = true
+                val dRingKeep = true
+                val dBabyKeep = true
+    
+                val captureLeftHand: Boolean = true
+                val instructionScreen: Boolean = false
+                val config = JSONObject()
+                config.put(
+                    UIConfigurationParameters.CFC_PROCESS_INDEX_FINGER,
+                    if (indexCapture) "Y" else "N"
+                )
+                config.put(
+                    UIConfigurationParameters.CFC_PROCESS_MIDDLE_FINGER,
+                    if (middleCapture) "Y" else "N"
+                )
+                config.put(
+                    UIConfigurationParameters.CFC_PROCESS_RING_FINGER,
+                    if (ringCapture) "Y" else "N"
+                )
+                config.put(
+                    UIConfigurationParameters.CFC_PROCESS_BABY_FINGER,
+                    if (babyCapture) "Y" else "N"
+                )
+                config.put(
+                    UIConfigurationParameters.CFC_CAPTURE_LEFT_HAND,
+                    if (captureLeftHand) "Y" else "N"
+                )
+    
+                config.put(
+                    UIConfigurationParameters.CFC_KEEP_INDEX_FINGER,
+                    if (dIndexKeep) "Y" else "N"
+                )
+                config.put(
+                    UIConfigurationParameters.CFC_KEEP_MIDDLE_FINGER,
+                    if (dMiddleKeep) "Y" else "N"
+                )
+                config.put(
+                    UIConfigurationParameters.CFC_KEEP_RING_FINGER,
+                    if (dRingKeep) "Y" else "N"
+                )
+                config.put(
+                    UIConfigurationParameters.CFC_KEEP_BABY_FINGER,
+                    if (dBabyKeep) "Y" else "N"
+                )
+    
+                config.put(
+                    UIConfigurationParameters.CFC_SHOW_INSTRUCTION_SCREEN,
+                    if (instructionScreen == true) "Y" else "N"
+                )
+                //set language for sdk capture
+                FingerPrintCaptureSDK.setLanguage(LanguageUtils.LANGUAGE.ES.toString())
+                
+                FingerPrintCaptureSDK.captureFourFingerprint(this@IDCaptureActivity,
+                    config
+                ) { resultMap, response -> //set 4fingerPrintData in to the sdk 2.0
+                    IdentityProofingSDK.set4FingerPrintData(resultMap)
+                }
+            }
+    
+        
+    ```
 
 Custom Camera Fingerprint Capture Configurations
 <table><thead>
@@ -588,16 +633,14 @@ Note: When using the IDentity SDK, you do not need to create a request for XML; 
 #### Parameters Used-
 
 ##### SDK initialization-
-
-- [initializeApiBaseUrl] - Base url provided by Idmission to initialize the SDK.
-- [apiBaseUrl] - Base url provided by Ismission for API calls.
-- [loginId] - LoginId provided by Idmission.
-- [password] - Password you have created with loginId.
-- [merchantId] - MerchantId provided by idmission.
+- [activityContext] - Activity  context.
+- [apiBaseUrl] - Base url provided by IDmission for API calls.
 - [enableDebug] - (Boolean) If you want to enable debug options or not.
 - [enableGPS] - (Boolean) If you want to enable GPS options or not.
 - [sdkCustomizationOptions] - SDKCustomizationOptions options if you want to add your customized
   UI details.
+- [isUpdateModelsData] - (Boolean) If you want to update model from the server.
+- [accessToken] - Access token value
 
 ##### Service Enroll Call
 
@@ -605,159 +648,314 @@ Note: When using the IDentity SDK, you do not need to create a request for XML; 
 
 ##### SDK UI Customization Options-
 
-- You can add your own customised ui details for ID and Face in Instruction, Capture and Retry
-  screen by adding SDKCustomizationOptions in initialization or service call. You can refer
-  below example:
+You can customize almost every aspect of the ID and Selfie capture screens by passing `SDKCustomizationOptions` to the initialization or individual service calls. Below is the **complete technical reference** of every available field in the SDK.
 
-````
+---
 
-    private fun getSdkCustomOptimization(): SDKCustomizationOptions {
-        return SDKCustomizationOptions(
-            language = LANGUAGE
-                .valueOf(language!!),
+### 1. The Main Customization Entry Point (`SDKCustomizationOptions`)
+
+The `SDKCustomizationOptions` class acts as the master container for all UI and behavioral settings across the different capture modules (ID, Selfie, Document, etc.).
+
+| Field | Type | Description |
+| :--- | :--- | :--- |
+| `language` | Enum | Application default language (EN, ES, FR, HI, etc.). |
+| `bothCameraToggle` | Boolean | Enable camera toggle for both selfie and document camera. |
+| `documentCameraToggle` | Boolean| Enable camera toggle button specifically in document view. |
+| `liveFaceCameraToggle` | Boolean | Enable camera toggle button specifically in Selfie view. |
+| `defaultLiveFaceCamera`| Enum | Default camera facing for Selfie (`FRONT` or `BACK`). |
+| `defaultDocumentCamera`| Enum | Default camera facing for Document (`FRONT` or `BACK`). |
+| `documentCameraOrientation`| Enum | Capture orientation (`PORTRAIT` or `LANDSCAPE`). |
+| `isDebugMode` | Boolean | Toggles display of debug information overlay during capture. |
+| `isScreenRecordingEnabled`| Boolean| Toggles permission for screen recording and screenshots. |
+
+#### Sub-Option Modules
+The main class also hosts specialized customization blocks for each workflow:
+- `idCaptureCustomizationOptions`: Logic and UI for identity documents.
+- `selfieCaptureCustomizationOptions`: Logic and UI for liveness and face capture.
+- `documentCaptureCustomizationOptions`: Settings for generic document capture.
+- `signatureCaptureCustomizationOptions`: Settings for signature pad screens.
+- `voiceCaptureCustomizationOptions`: Settings for voice recording/biometrics.
+- `autoFillCaptureCustomizationOptions`: Settings for automated data extraction flows.
+
+---
+
+### 2. ID Capture Technical Reference (`IDCaptureCustomizationOptions`)
+
+The `IDCaptureCustomizationOptions` class contains settings specific to the document scanning workflow.
+
+#### 2.1 General ID Capture Settings
+
+| Field | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `enableRealIDDetection` | Boolean | true | Toggles real ID detection logic. |
+| `enableUploadIDData` | Boolean | true | Toggles uploading ID data to the GTE service. |
+| `enableIDCapture4K` | Boolean | false | Toggles 4K resolution for ID capture. |
+| `enableIdInstructionScreen` | Boolean | false | Toggles the instruction screen before ID capture. |
+| `enableDocumentInstructionScreen` | Boolean | false | Toggles instruction screen for generic documents. |
+| `enablePassportNfc` | Boolean | false | Toggles NFC scanning for passports (VideoID only). |
+| `performIdCaptureBeforeSelfie` | Boolean | false | Forces ID capture before Selfie. |
+| `isSecondaryID` | Boolean | false | Marks the capture as a secondary ID. |
+
+#### 2.2 ID Capture Core Logic (`IDCaptureOptions`)
+
+| Field | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `documentFrameWidthRatio` | Float | 1.428 | Target aspect ratio for the document frame. |
+| `frontRealnessThreshold` | Float | 0.8 | Threshold for front ID realness detection. |
+| `backRealnessThreshold` | Float | 0.8 | Threshold for back ID realness detection. |
+| `frontDocumentConfidence` | Float | 0.7 | Classification confidence for front ID. |
+| `backDocumentConfidence` | Float | 0.7 | Classification confidence for back ID. |
+| `lowerWidthThresholdTolerance` | Float | 0.2 | Min width tolerance for auto-capture. |
+| `upperWidthThresholdTolerance` | Float | 0.05 | Max width tolerance for auto-capture. |
+| `focusThreshold` | Float | 0.98 | Minimum focus probability required. |
+| `fingerDetectionThreshold` | Float | 0.30 | Sensitivity for finger detection. |
+| `glareDetectionThreshold` | Float | 0.20 | Sensitivity for glare detection. |
+| `minMrzConfidence` | Float | 0.50 | Minimum MRZ reading confidence. |
+| `minBarcodeConfidence` | Float | 0.50 | Minimum barcode reading confidence. |
+| `documentBackComponentConfidence` | Float | 0.70 | Back component detection confidence. |
+| `allowOverrideWrongDocumentTypeAfterMs` | Long | 8000 | Timeout before allowing mismatch override. |
+| `wrongDocumentTypeHandlingMode` | Enum | MANUAL | `MANUAL_CAPTURE` or `AUTO_CAPTURE` logic. |
+| `wrongDocumentTypeWarningDelayInSec` | Int | 5 | Seconds before showing the warning label. |
+| `separateIdCardCaptureSequence` | Boolean | false | Toggles separate ID card preview flow. |
+
+#### 2.2 ID Strings & Prompts (`IDStringOptions`)
+
+| Field | Description |
+| :--- | :--- |
+| `captureScreenFrontIDLabel` | Custom label for "Scan the Front of your ID". |
+| `captureScreenBackIDLabel` | Custom label for "Scan the Back of your ID". |
+| `captureScreenBarcodeLabel` | Custom label for "Scan the Barcode on the Back...". |
+| `captureScreenDocumentCaptureLabel` | Custom label for generic "Frame Your Document" screens. |
+| `captureScreenError` | Toast message shown when face/text detection fails. |
+| `captureScreenBarcodeError` | Toast message shown when barcode detection fails. |
+| `moveCloser` / `moveAway` | Feedback prompts for document distance adjustment. |
+| `alignRectangle` | Prompt for manual alignment inside the capture frame. |
+| `useFront` / `useBack` | Orientation prompts for the document sides. |
+| `makeSurePhotoTextVisible` | General visibility instruction text. |
+| `scanBarcode` / `makeSureBarcodeVisible` | Specific instructions for barcode capture fallback. |
+| `frontBackMismatch` | Mismatch warning header text. |
+| `flipToBack` | Prompt text instructing the user to flip the ID. |
+| `tooMuchGlare` / `tooMuchDark` / `tooBlurry` | Real-time quality feedback prompts. |
+| `retryScreenLabelText` | Main error message on the Retry screen. |
+| `retryButtonText` | Label for the retry action button. |
+| `retryScreenCancelButtonText` | Label for the cancel/exit button on retry screen. |
+| `idInstructionText` | Title/Header on the pre-capture instruction screen. |
+| `idInstructionScreenButtonText` | Label for the "Continue" button on instruction screen. |
+| `documentInstructionText` | Alternative instruction text for document flows. |
+| `captureScreenCancelBtnText` | Toolbar cancel button text. |
+| `documentDetectedIdHoldText` | Post-detection "Hold still" instruction. |
+| `incorrectDocumentSideBackText` | Alert message when identifying a Front when Back is expected. |
+| `incorrectDocumentSideFrontText`| Alert message when identifying a Back when Front is expected. |
+| `autofillInstructionsText` | Guidance for the autofill/OCR data extraction sequence. |
+| `alignDocumentText` | Persistent instruction to align the document. |
+| `fingerDetectedOnIdText` | Floating warning when a finger obscures the ID. |
+| `glareDetectedOnIdText` | Floating warning when light glare obscures the ID. |
+| `idCaptureWarningMessage` | Message shown on the yellow tooltip for side-mismatch. |
+| `idCaptureFrontWarningMessage` | Message specifically for unexpected front side detection. |
+| `captureAnywayButtonText` | Override button text in manual mismatch handling mode. |
+| `previewScreenTitleIdFront` | Navigation title shown after successful Front ID capture. |
+| `previewScreenTitleIdBack` | Navigation title shown after successful Back ID capture. |
+| `previewScreenRetryBtnText` | Text for the retry action on confirmation screen. |
+| `previewScreenDoneBtnText` | Text for the "Proceed/Done" action on confirmation screen. |
+
+#### 2.3 ID Visuals & Colors (`IDColorOptions`)
+
+| Field | Description |
+| :--- | :--- |
+| `captureScreenBgColor` | Main capture screen background color (Hex). |
+| `captureScreenTopBarBgColor` | Toolbar background color (Hex). |
+| `captureScreenCancelBtnTintColor` | Tint for the top-bar cancel button icon. |
+| `captureScreenFrontIDLabelColor` | Color for front-side specific instruction text. |
+| `captureScreenBackIDLabelColor` | Color for back-side specific instruction text. |
+| `captureScreenDocumentCaptureLabelColor`| Color for generic document instruction text. |
+| `topBarCancelBtnTextColor` | Color for the cancel button text label. |
+| `captureScreenErrorTextBgColor` | Background color for floating error tooltips. |
+| `captureScreenErrorTextColor` | Text color for floating error tooltips. |
+| `captureScreenSuccessTextBgColor` | Background color for floating success tooltips. |
+| `captureScreenSuccessTextColor` | Text color for floating success tooltips. |
+| `captureScreenInfoTextBgColor` | Background for non-critical info tooltips. |
+| `captureScreenInfoTextColor` | Text color for non-critical info tooltips. |
+| `instructionScreenBackgroundColor` | Overall background for the instruction screen. |
+| `instructionScreenLabelTextColor` | Text color for instruction body labels. |
+| `instructionScreenButtonTextColor` | Text color for the primary instruction button. |
+| `instructionScreenLabelTextBgColor` | Background card color for instruction text. |
+| `instructionScreenButtonBackgroundColor`| Background color for the primary instruction button. |
+| `instructionScreenBackButtonTintColor` | Tint for the navigation back button on instructions. |
+| `retryScreenBackgroundColor` | Overall background for the retry screen. |
+| `retryScreenLabelTextColor` | Text color for error messages on retry screen. |
+| `retryScreenImageTintColor` | Color tint for retry-related illustrations. |
+| `retryScreenDoneButtonTextColor` | Text color for the "Done/Exit" button on retry. |
+| `retryScreenRetryButtonTextColor` | Text color for the "Retry" button on retry screen. |
+| `retryScreenDoneButtonBgColor` | Background for the "Done/Exit" button on retry. |
+| `retryScreenRetryButtonBgColor` | Background for the "Retry" button on retry screen. |
+| `warningLabelBackgroundColor` | Background color for side-mismatch yellow alerts. |
+| `warningLabelTextColor` | Text color for side-mismatch yellow alerts. |
+| `captureAnywayButtonColor` | Background color for the mismatch override button. |
+| `captureAnywayButtonTextColor` | Text color for the mismatch override button. |
+| `progressBarColor` | Color for the animated auto-capture progress circle. |
+| `previewScreenBackgroundColor` | Overall background of the post-capture preview screen. |
+| `previewScreenTopViewBgColor` | Toolbar background on the preview screen. |
+| `previewScreenTitleLabelTextColor` | Navigation title color on the preview screen. |
+| `previewScreenRetryBtnBackgroundColor` | Background for retry button on confirmation screen. |
+| `previewScreenRetryBtnTextColor` | Text color for retry button on confirmation screen. |
+| `previewScreenDoneBtnBackgroundColor` | Background for done button on confirmation screen. |
+| `previewScreenDoneBtnTextColor` | Text color for done button on confirmation screen. |
+
+#### 2.4 ID Typography (`IDFontOptions`)
+
+| Field | Description |
+| :--- | :--- |
+| `captureScreenFrontIDTextFont` | Font resource (`R.font.*`) for front side labels. |
+| `captureScreenFrontIDTextFontSize` | Font size (SP) for front side labels. |
+| `captureScreenBackIDTextFont` | Font resource (`R.font.*`) for back side labels. |
+| `captureScreenBackIDTextFontSize` | Font size (SP) for back side labels. |
+| `captureScreenDocumentCaptureTextFont` | Font resource (`R.font.*`) for document labels. |
+| `captureScreenDocumentCaptureTextFontSize`| Font size (SP) for document labels. |
+| `labelFont` / `labelFontSize` | Default typography for instruction text. |
+| `labelPromptFont` / `FontSize` | Default typography for floating user prompts. |
+| `instructionScreenLabelFont` / `Size` | Typography for body text on instruction screen. |
+| `instructionScreenButtonFont` / `Size` | Typography for the primary button on instructions. |
+| `retryScreenLabelTextFont` / `Size` | Typography for main error labels on retry screens. |
+| `retryScreenDoneButtonFont` / `Size` | Typography for the "Done" button on retry screens. |
+| `retryScreenRetryButtonFont` / `Size` | Typography for the "Retry" button on retry screens. |
+| `warningLabelFont` / `FontSize` | Typography for side-mismatch floating alerts. |
+| `captureAnywayButtonTextFont` / `Size`| Typography for the override button text. |
+| `previewScreenTitleFont` / `FontSize` | Typography for the post-capture success title. |
+| `previewScreenRetryBtnFont` / `Size` | Typography for the confirmation retry button. |
+| `previewScreenDoneBtnFont` / `Size` | Typography for the confirmation done button. |
+
+#### 2.5 ID Images & Icons (`IDImageOptions`)
+
+- **Retry Illustration**: `retryScreenImage`
+- **ID Silhouettes**: `captureScreenIdFrontOverlayImage`, `captureScreenIdBackOverlayImage`
+- **Instruction Images**: `idInstructionImageResId`, `idInstructionBackImageResId`, `documentInstructionImageResId`
+- **Toolbars**: `captureBottomBarImage`, `captureScreenCancelBtnImage`
+- **Preview Icons**: `previewScreenToolbarBackIcon`, `previewScreenToolbarBackIconTintColor`
+
+#### 2.6 ID Layout & Visibility (`IDLayoutOptions`)
+
+- **Alignment**: `captureLabelGravity` (CENTER/TOP/BOTTOM), `topBarCancelButtonGravity` (START/END).
+- **Background Drawables**: `instructionContinueBtnBg`, `retryScreenDoneBtnBg`, `retryScreenRetryBtnBg`, `previewScreenRetryBtnBg`, `previewScreenDoneBtnBg`.
+- **Visibility Toggles**: `instructionBackBtnHide`, `previewScreenToolbarBackIconHide`, `isCaptureScreenToolbarTitleHide`.
+- **Advanced Layout**: `instructionLabelTextBgCardElevation`, `isIdCaptureProgressBarEnabled`, `idCaptureProgressBarLineWidth`.
+
+---
+
+### 3. Selfie Capture Technical Reference (`SelfieCaptureCustomizationOptions`)
+
+#### 3.1 Selfie Capture Logic (`SelfieCaptureOptions`)
+
+| Field | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `minFaceWidth` | Float | 0.6 | Min face width relative to the frame for capture. |
+| `eyeOpenProbability` | Float | 0.4 | Detection threshold for eyes open/closed prompts. |
+| `minHeadEulerAngle` | Float | -10 | Min head tilt threshold for pose validation. |
+| `maxHeadEulerAngle` | Float | 10 | Max head tilt threshold for pose validation. |
+| `minRelativeNoseHeight` | Float | 0.48 | Min nose vertical limit to ensure face centering. |
+| `maxRelativeNoseHeight` | Float | 0.67 | Max nose vertical limit to ensure face centering. |
+| `labelsConfidenceThreshold` | Float | 0.79 | Detection confidence for accessories like glasses. |
+| `faceMaskProbabilityThreshold` | Float | 0.98 | Detection confidence for face masks. |
+| `liveFaceProbabilityThreshold` | Float | 0.9 | Critical threshold for liveness/realness grading. |
+| `consecutiveFakeFaceLimit` | Int | 10 | Failed attempts allowed before showing retry. |
+| `lightIntensityThreshold` | Float | 0.05 | Sensitivity for shadow and over-exposure detection. |
+| `capture4K` | Boolean | false | Toggles 4K resolution capture for selfie. |
+| `uploadFaceData` | Boolean | true | Toggles uploading captured face to GTE servers. |
+| `focusFaceThreshold` | Float | 0.20 | Focus sensitivity for selfie capture verification. |
+
+#### 3.2 Selfie Strings & Prompts (`SelfieStringOptions`)
+
+| Field | Description |
+| :--- | :--- |
+| `captureScreenToolbarTitleText` | Custom title for the selfie capture toolbar. |
+| `captureScreenLabel` | Instructional prompt to frame the face. |
+| `captureScreenError` | Generic error message for detection failure. |
+| `moveCloser` / `moveAway` | Feedback prompts for face distance adjustments. |
+| `alignInsideOval` | Instruction to center the face within the UI oval. |
+| `capturingFace` | Message shown exactly during the capture event. |
+| `realFace` / `fakeFace` | Real-time liveness verification feedback markers. |
+| `leftEyeClosed` / `rightEyeClosed` | Specific eye-status feedback prompts. |
+| `faceMaskDetected` | Shown when detection is obscured by a mask. |
+| `tooMuchLight` / `tooDark` | Quality feedback regarding ambient environment. |
+| `straightenHead` / `eyesClosed` | Specific pose correction instructions. |
+| `multipleFaces` | Alert when more than one face is in the frame. |
+| `moveFaceDown` / `moveFaceUp` | Specific vertical adjustment instructions. |
+| `glassesDetected` / `hatDetected` | Instruction to remove obscuring accessories. |
+| `handDetected` | Shown when common gestures cover the face. |
+| `scarfDetected` / `maskDetected` | Accessory-specific detection alerts. |
+| `retryScreenLabelText` | Main error message on the Selfie Retry screen. |
+| `retryButtonText` | Label for the "Retry" action button. |
+| `retryCancelButtonText` | Label for the "Cancel/Exit" action button. |
+| `selfieInstructionText` | Body text for pre-capture selfie instructions. |
+| `selfieInstructionScreenButtonText` | Continue button label for selfie instructions. |
+| `faceNotInFocus` | Alert when focus quality is insufficient for capture. |
+| `liveFaceNotDetected` | Refined liveness failure prompt for the user. |
+
+#### 3.3 Selfie Visuals, Typography & Images (Summary)
+
+Configuring Selfie specifics follows the same detailed inheritance pattern as `IDCapture`:
+- **Colors**: `topBarTitleTextColor`, `captureScreenBgColor`, `captureScreenTopBarBgColor`, `captureScreenToolbarTitleTextColor`, `captureScreenCancelBtnTintColor`, `captureScreenErrorTextBgColor`, `captureScreenSuccessTextBgColor`, `captureScreenInfoTextBgColor`, `instructionScreenBackgroundColor`, `retryScreenBackgroundColor`.
+- **Fonts**: `labelFont`, `labelPromptFont`, `captureScreenToolbarTitleTextFont`, `instructionScreenLabelFont`, `instructionScreenButtonFont`, `retryScreenLabelTextFont`, `retryScreenDoneButtonFont`, `retryScreenRetryButtonFont`.
+- **Images**: `captureSilhouetteImage`, `retryScreenImage`, `selfieInstructionImageResId`, `selfieInstructionBackImageResId`, `captureBottomBarImage`, `captureScreenCancelBtnImage`.
+- **Layout**: `captureLabelGravity`, `topBarCancelButtonGravity`, `instructionContinueBtnBg`, `retryScreenDoneBtnBg`, `retryScreenRetryBtnBg`, `instructionBackBtnHide`, `isCaptureScreenToolbarTitleHide`.
+
+---
+
+### 4. Comprehensive Usage Example (Kotlin)
+
+```kotlin
+private fun getCompleteSdkCustomization(): SDKCustomizationOptions {
+    return SDKCustomizationOptions(
+        language = LANGUAGE.EN.toString(),
+        idCaptureCustomizationOptions = IDCaptureCustomizationOptions().apply {
+            // General Configuration
+            enableRealIDDetection = true
+            enableIdInstructionScreen = true
             
-            
-            /* For Document related customizations */
-            idCaptureCustomizationOptions = IDCaptureCustomizationOptions(
-                enableIdInstructionScreen = true,
-                stringOptions = IDStringOptions(
-                    captureScreenFrontIDLabel = "Scan the Front of your ID",
-                    captureScreenBackIDLabel = "SCAN the Back of your ID",
-                    captureScreenBarcodeLabel ="Scan the Barcode on the Back of your ID ",
-                    captureScreenDocumentCaptureLabel = "Frame Your Document.",
-                    captureScreenError = "Sorry, we can\'t seem to find a face and/or required text on this ID.",
-                    captureScreenBarcodeError = "Sorry, we can\'t seem to detect the barcode in this image.",
-                    moveCloser = "Move ID Closer",
-                    moveAway = "Move ID Away",
-                    alignRectangle = "Align Document Inside Rectangle",
-                    useFront = "Use Front of ID",
-                    useBack = "Use Back of ID",
-                    makeSurePhotoTextVisible = "Make sure all text on the ID is completely visible.",
-                    scanBarcode = "Scan Barcode",
-                    makeSureBarcodeVisible = "Make sure the barcode on the ID is completely visible.",
-                    frontBackMismatch = "ID Front and Back Do Not Match",
-                    flipToBack = "Flip to Capture ID Back",
-                    tooMuchGlare = "Too much light,\n move document away from direct light",
-                    tooMuchDark = "It\'s too dark to take a good image. Find a place with better lighting.",
-                    retryScreenLabelText = "Real ID not detected. Please try again.",
-                    retryButtonText = "Retry",
-                    cancelButtonText = "Cancel",
-                    idInstructionText = "Scan ID",
-                    documentInstructionText = "Scan ID",
-                    cancelText = "Cancel"
-                    
-                ),
-                layoutOptions = IDLayoutOptions(
-                captureLabelGravity = LabelGravity.CENTER,
-                topBarCancelButtonGravity = CancelButtonGravity.START),
-                colorOptions = IDColorOptions(
-                    captureBackgroundColor = "#1C2B48",
-                    captureLabelColor = "#FFFFFF",
-                    captureSuccessLabelTextColor = "#FFFFFF",
-                    
-                    captureErrorLabelTextColor = "#1C2B48",
-                    captureErrorLabelBackgroundColor = "#FFFFFF",
-                    captureErrorLabelBackgroundColor = "#FFFFFF"
-                    instructionScreenBackgroundColor = "#1C2B48",
-                    instructionScreenLabelTextColor = "#FFFFFF",
-                    instructionScreenButtonBackgroundColor = "#FFFFFF",
-                    instructionScreenButtonTextColor = "#000000",
-                    retryScreenBackgroundColor = "#1C2B48",
-                    retryScreenLabelTextColor = "#FFFFFF",
-                    retryScreenButtonTextColor = "#000000",
-                    retryScreenButtonBackgroundColor = "#FFFFFF",
-                    retryScreenImageTintColor = "#FFFFFF",
-                    topBarBackgroundColor = "#FFFFFF",
-                    topBarTitleTextColor = "#000000"
-                ),
-                fontOptions = IDFontOptions(
-                    labelFont = R.font.roboto_medium,
-                    labelFontSize = 14,
-                    labelPromptFontSize = 14,
-                    instructionScreenButtonFont = R.font.roboto_medium,
-                    instructionScreenLabelFont = R.font.roboto_medium,
-                    retryScreenLabelFont = R.font.roboto_medium,
-                    retryScreenButtonFont = R.font.roboto_medium
-                )
-            ),
+            // Core Thresholds & Logic
+            captureOptions.apply {
+                allowOverrideWrongDocumentTypeAfterMs = 12000L
+                wrongDocumentTypeHandlingMode = WrongDocumentTypeHandlingMode.MANUAL_CAPTURE
+                frontRealnessThreshold = 0.85f
+                separateIdCardCaptureSequence = true
+            }
+            // Strings & Feedback
+            stringOptions.apply {
+                captureScreenFrontIDLabel = "Verification: FRONT SIDE"
+                previewScreenTitleIdFront = "FRONT VERIFIED"
+                idCaptureWarningMessage = "Mismatch: Use Front side"
+                moveCloser = "Bring the ID closer to the camera"
+            }
+            // Colors & Branding
+            colorOptions.apply {
+                warningLabelBackgroundColor = "#FFC107"
+                progressBarColor = "#4CAF50"
+                previewScreenBackgroundColor = "#F0F0F0"
+                captureAnywayButtonColor = "#2196F3"
+            }
+            // Typography (SP sizes and Font Resources)
+            fontOptions.apply {
+                labelFontSize = 18
+                previewScreenTitleFontSize = 22
+                labelFont = R.font.custom_bold
+                previewScreenTitleFont = R.font.custom_bold_italic
+            }
+            // Layout & Visibility
+            layoutOptions.apply {
+                isIdCaptureProgressBarEnabled = true
+                idCaptureProgressBarLineWidth = 8.0f
+                isCaptureScreenToolbarTitleHide = true
+            }
+        },
+        selfieCaptureCustomizationOptions = SelfieCaptureCustomizationOptions().apply {
+            enableSelfieInstructionScreen = true
+            captureOptions.liveFaceProbabilityThreshold = 0.92f
+            stringOptions.liveFaceNotDetected = "Verification failed. Please stay in a well-lit area."
+            colorOptions.captureScreenBgColor = "#121212" // Dark mode selfie
+        }
+    )
+}
+```
 
-            
-            /* For Selfie related customizations */
-            selfieCaptureCustomizationOptions = SelfieCaptureCustomizationOptions(
-                enableSelfieInstructionScreen = true,
-                stringOptions = SelfieStringOptions(
-                
-                 captureScreenLabel = "Frame your face inside the oval.",
-                captureScreenError = "Sorry, we can\'t seem to detect a face.",
-                moveCloser = "Move Closer",
-                moveAway = "Move Further",
-                alignInsideOval = "Align Face Inside Oval",
-                capturingFace = "Capturing Face",
-                realFace = "Real Face",
-                leftEyeClosed = "Left Eye Closed",
-                rightEyeClosed = "Right Eye Closed",
-                faceMaskDetected = "Face Mask Detected",
-                tooMuchLight = "Excessive backlighting detected. Please reduce backlighting to proceed.",
-                tooDark = "Excessive darkness detected. Please reduce darkness to proceed.",
-                straightenHead = "Tilt head upright",
-                eyesClosed = "Keep eyes open",
-                moveFaceDown = "Move Face Down",
-                moveFaceUp = "Move Face Up",
-                glassesDetected = "Remove Glasses",
-                hatDetected = "Hat detected",
-                scarfDetected = "Scarf Detected",
-                scarfHatDetected = "Scarf and Hat detected",
-                glassesHatDetected = "Glasses and Hat detected",
-                scarfGlassesDetected = "Scarf and Glasses detected",
-                maskDetected = "Mask detected",
-                maskHatDetected = "Mask and Hat detected",
-                scarfMaskDetected = "Scarf and Mask detected",
-                maskGlassesDetected = "Mask and Glasses detected",
-                fakeFace = "Fake Face",
-                retryScreenLabelText = "Live face not detected. Please try again.",
-                retryButtonText = "Retry",
-                cancelButtonText = "Cancel",
-                selfieInstructionText = "Scan selfie",
-                cancelText = "Cancel",
-                ),
-                layoutOptions = SelfieLayoutOptions(
-                captureLabelGravity = LabelGravity.CENTER,
-                topBarCancelButtonGravity = CancelButtonGravity.START),
-                colorOptions = SelfieColorOptions(
-                    captureBackgroundColor = "#1C2B48",
-                    captureLabelColor = "#FFFFFF",
-                    captureSuccessLabelTextColor = "#FFFFFF"
-                    captureErrorLabelTextColor = "#1C2B48",
-                    captureErrorLabelBackgroundColor = "#FFFFFF",
-                    captureErrorLabelBackgroundColor = "#FFFFFF"
-                    instructionScreenBackgroundColor = "#1C2B48",
-                    instructionScreenLabelTextColor = "#FFFFFF",
-                    instructionScreenButtonBackgroundColor = "#FFFFFF",
-                    instructionScreenButtonTextColor = "#000000",
-                    retryScreenBackgroundColor = "#1C2B48",
-                    retryScreenLabelTextColor = "#FFFFFF",
-                    retryScreenButtonTextColor = "#000000",
-                    retryScreenButtonBackgroundColor = "#FFFFFF",
-                    retryScreenImageTintColor = "#FFFFFF",
-                    topBarBackgroundColor = "#FFFFFF",
-                    topBarTitleTextColor = "#000000",
-                ),
-                fontOptions = SelfieFontOptions(
-                    labelFont = R.font.roboto_medium,
-                    labelFontSize = 14,
-                    labelPromptFontSize = 14,
-                    instructionScreenButtonFont = R.font.roboto_medium,
-                    instructionScreenLabelFont = R.font.roboto_medium,
-                    retryScreenLabelFont = R.font.roboto_medium,
-                    retryScreenButtonFont = R.font.roboto_medium
-
-                )
-            )
-        )
-    }
-
-
-````
 
 ##### Setting an on cancelled callback
 
@@ -775,32 +973,122 @@ documentation <a href="./-i-dentity--s-d-k/com.idmission.sdk2.identityproofing/-
 here</a>
 
 ## SDK Flavours
-- Identity SDK
-- Identity SDK Without Models
+- IdentityVideoID SDK
+- IdentityVideoID SDK Without Models
 - IdentityMedium SDK
 - IdentityMedium SDK Without Models
 - IdentityLite SDK
 - IdentityLite SDK Without Models
-- IdentityVideoID SDK
-- IdentityVideoID SDK Without Models
+- IdentityLiveness SDK
+- IdentityLiveness SDK Without Models
+
 
 ## SDK Flavours Supported Features
 
-|                         |  Identity SDK   |  IdentityMedium SDK   |  IdentityVideoID SDK   |
-|:-----------------------:|:---------------:|:---------------------:|:----------------------:|
-|                         | <B>Identity SDK | <B>IdentityMedium SDK | <B>IdentityVideoID SDK |
-|     Document Detect     |    On Device    |       On Device       |       On Device        |
-|    Rotate, crop etc.    |    On Device    |       On Server       |       On Device        |
-|    Document Realness    |    On Device    |       On Device       |       On Device        |
-| Document Classification |    On Device    |       On Server       |       On Device        |
-|   MRZ/Barcode reading   |    On Device    |       On Device       |       On Device        |
-|     OCR from front      |    On Server    |       On Server       |       On Server        |
-|       Face detect       |    On Device    |       On Device       |       On Device        |
-|     Liveness detect     |    On Device    |       On Device       |       On Device        |
-| Detect hats and glasses |    On Device    |       On Server       |       On Device        |
-|        Video ID         |       N/A       |          N/A          |       On Device        |
+|                         |  IdentityVideoID SDK   |  IdentityMedium SDK   |  IdentityLite SDK   |  IdentityLiveness SDK   |
+|:-----------------------:|:----------------------:|:---------------------:|:-------------------:|:-----------------------:|
+|                         | <B>IdentityVideoID SDK | <B>IdentityMedium SDK | <B>IdentityLite SDK | <B>IdentityLiveness SDK | 
+|     Document Detect     |       On Device        |       On Device       |      On Device      |           N/A           |
+|    Rotate, crop etc.    |       On Device        |       On Server       |      On Device      |           N/A           |
+|    Document Realness    |       On Device        |       On Device       |      On Server      |           N/A           |
+| Document Classification |       On Device        |       On Server       |      On Server      |           N/A           |
+|   MRZ/Barcode reading   |       On Device        |       On Device       |      On Device      |           N/A           |
+|     OCR from front      |       On Device        |       On Server       |      On Server      |           N/A           |
+|       Face detect       |       On Device        |       On Device       |      On Device      |        On Device        |
+|     Liveness detect     |       On Device        |       On Device       |      On Device      |        On Device        |
+| Detect hats and glasses |       On Device        |       On Server       |      On Server      |        On Device        |
+|        Video ID         |       On Device        |          N/A          |         N/A         |           N/A           |
+
+## Reduce APK size
+
+### 1. Exclude specific ABI (Application Binary Interface) support like arm64-v8a, armeabi-v7a, x86_64, or x86
+````
+android {
+    ...
+    defaultConfig {
+        ...
+        ndk {
+            abiFilters 'arm64-v8a' // Include only the ABIs you need
+        }
+    }
+}
+````
+### 2. Enable app optimization
+````
+android {
+    buildTypes {
+        release {
+            // Enables code-related app optimization.
+            isMinifyEnabled = true
+
+            // Enables resource shrinking.
+            isShrinkResources = true        
+            ...
+        }
+    }
+    ...
+}        
+````
+### 3. Enable optimized resource shrinking, add the following to your project's gradle.properties file:
+````
+android.r8.optimizedResourceShrinking=true
+````
+### 4. Use SDK Flavours without models. Models are downloaded upon the first initialization of the SDK.
+
+Please note that **Download Size** in Android Studio's built-in APK Analyzer tool represents the estimated compressed size of the entity as it would be delivered by Google Play
+
+## ProGuard / R8 Configuration
+
+If you use ProGuard or R8 for code obfuscation and shrinking, add the following rules to your `proguard-rules.pro` file to ensure the SDK functions correctly:
+
+```proguard
+# Prevent package name conflicts
+-repackageclasses 'com.idmission.sdk2.internal.obfuscated'
+-allowaccessmodification
+-flattenpackagehierarchy 'com.idmission.sdk2.internal.obfuscated'
+
+# Core SDK classes
+-keep class com.idmission.sdk2.identityproofing.IdentityProofingSDK { *; }
+-keep class com.idmission.sdk2.client.cache.SDKCache { *; }
+-keep class com.idmission.sdk2.client.model.** { *; }
+-keep class com.idmission.sdk2.capture.presentation.camera.helpers.ProcessedCapture { *; }
+-keep class * extends com.idmission.sdk2.capture.presentation.camera.helpers.ProcessedCapture { *; }
+
+# Kotlin Serialization
+-keepclassmembers class kotlinx.serialization.json.** {
+    *** Companion;
+}
+-keepclasseswithmembers class kotlinx.serialization.json.** {
+    kotlinx.serialization.KSerializer serializer(...);
+}
+
+# ML Kit & TensorFlow Lite
+-keep class com.google.mlkit.** { *; }
+-keep class org.tensorflow.** { *; }
+-dontwarn org.tensorflow.**
+
+# Retrofit & OkHttp
+-keepattributes *Annotation*, InnerClasses, EnclosingMethod, Signature, Kotlin.Metadata
+-keepclasseswithmembers interface * {
+    @retrofit2.http.* <methods>;
+}
+
+# Preserve Enums
+-keep public enum com.idmission.sdk2.** { *; }
+```
 
 ## SDK Version History
+#### v11.1.07.2.20 (28th April 2026)
+* Added customizable properties
+* Updated DocumentDetect model with ID back-side prediction
+* Reduced overall SDK package size
+* Introduced a timeout timer for capture to improve user flow and prevent indefinite waiting.
+* Implemented prompt and error messages on the ID Capture screen and Selfie screen aligned with
+  iOS behavior.
+* Added support for separate front and back ID capture flow for improved control and user
+  experience.
+
+
 #### v11.1.01.2.04 (15th January 2026)
 * Server-Side Autofill Implementation
 * UI Enhancements to support additional options for customizations.
@@ -823,6 +1111,9 @@ here</a>
 * Updated native .so with 16KB page size as per Google Play Store policy.
 * UI improvement related to the Continue button.
 
+#### v10.1.12.2.10 (24th June 2025)
+* Added support for custom product request.
+
 #### v10.1.4.2.03 (26th February 2025)
 * Reduced the overall size of SDK.
 * Added configuration options to change the sequence of ID and Selfie capture.
@@ -835,7 +1126,7 @@ here</a>
 #### v9.6.24.2.15 (03rd December 2024)
 * Improved capture quality with model updates that notify users of obstructions over key ID information.
 
-#### v9.6.22.2.13 (November 2024)
+#### v9.6.22.2.13 (18th November 2024)
 * Integrated the latest swagger V4 API version. This includes updates to model download based on
   V4, updates to the new initialization process, as well as ensuring backward compatibility.
 * Added the selfie image in the response.
