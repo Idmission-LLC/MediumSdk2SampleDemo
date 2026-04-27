@@ -85,14 +85,14 @@ The SDK requires the following permissions and features to be declared in your `
 <uses-feature android:name="android.hardware.camera.any" />
 <uses-feature android:name="android.hardware.nfc" android:required="false" />
 
-<!-- Required Permissions -->
+    <!-- Required Permissions -->
 <uses-permission android:name="android.permission.INTERNET" />
 <uses-permission android:name="android.permission.CAMERA" />
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <uses-permission android:name="android.permission.VIBRATE" />
 <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-<!-- Optional/Feature Specific Permissions -->
+    <!-- Optional/Feature Specific Permissions -->
 <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 <uses-permission android:name="android.permission.RECORD_AUDIO" />
@@ -192,32 +192,32 @@ The SDK requires the following permissions and features to be declared in your `
 
     //IdentityMedium SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdk:11.1.07.2.20'     
+         implementation 'com.idmission.sdk2:idmission-mediumsdk:11.1.07.2.23'     
     }
 
     //IdentityMediumWithoutModels SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:11.1.07.2.20'     
+         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:11.1.07.2.23'     
     }
     
     //IdentityLite SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-litesdk:11.1.07.2.20'     
+         implementation 'com.idmission.sdk2:idmission-litesdk:11.1.07.2.23'     
     }
 
     //IdentityLiteWithoutModels SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-litesdkwithoutmodels:11.1.07.2.20'     
+         implementation 'com.idmission.sdk2:idmission-litesdkwithoutmodels:11.1.07.2.23'     
     }
     
     //IdentityLiveness SDK
     dependencies {  
-    implementation 'com.idmission.sdk2:idmission-livenesssdk:11.1.07.2.20'     
+    implementation 'com.idmission.sdk2:idmission-livenesssdk:11.1.07.2.23'     
     }
 
     //IdentityLivenessWithoutModels SDK
     dependencies {  
-        implementation 'com.idmission.sdk2:idmission-livenesssdkwithoutmodels:11.1.07.2.20'     
+        implementation 'com.idmission.sdk2:idmission-livenesssdkwithoutmodels:11.1.07.2.23'     
     }
     ```
 
@@ -393,7 +393,7 @@ Additional supported features
    Signature Capture Parameters
 
    |Parameter |      Type      |                                                                                                           Description                                                                                                            |
-      | :---: |:--------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+         | :---: |:--------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
    |<B>Parameter | <B>Type        |                                                                                                          <B>Description                                                                                                          |
    | activityContext|    Context     |                                                                                                    Instance of your Activity                                                                                                     |
    | captureSignatureConfig|   JSONObject   | {
@@ -425,64 +425,64 @@ Additional supported features
           
         } 
 
-  4. You may now use the library. Example usage below:
-      ```
-      class LaunchActivity : Activity() {    
-   
-          override fun onCreate(savedInstanceState: Bundle?) {  
-              super.onCreate(savedInstanceState)  
-              setContentView(R.layout.activity_launch)
-           
-              //SDK signature call
-              signatureCapture.setOnClickListener{
-              var doneBtnText = getString(R.string.done)
-                  var cancelBtnText = getString(R.string.clear)
-                  var signTitle = getString(R.string.sign_title)
-   
-                  SignatureSDK.captureSignature(this@LaunchActivity, JSONObject("{
-                  "signature_capture_screen_background_color": "#FFFFFF",
-                  "signature_capture_screen_box_border_color": "#000000",
+    4. You may now use the library. Example usage below:
+        ```
+        class LaunchActivity : Activity() {    
      
-                  "signature_stroke_color": "#0000FF",
-                  "signature_stroke_size": "20",
-   
-                  "signature_title_text": "Please Sign Below",
-                  "signature_title_text_color": "#0000FF",
-                  "signature_title_text_font": "font/custom_font.ttf",
-                  "signature_title_text_font_size": "20",
-           
-                  "signature_done_btn_text": "Done 1",
-                  "signature_done_btn_text_color": "#FFFFFF",
-                  "signature_done_btn_text_font_size": "20",
-                  "signature_done_btn_text_font": "font/custom_font.ttf",
-                  "signature_done_btn_background": "done_button",
-           
-                  "signature_clear_btn_text": "Clear 1",
-                  "signature_clear_btn_text_color": "#FF0000",
-                  "signature_clear_btn_text_font_size": "20",
-                  "signature_clear_btn_text_font": "font/custom_font.ttf",
-                  "signature_clear_btn_background": "cancel_button",
-           
-                  "signature_back_btn_tint_color": "#FF0000",
-                  "signature_back_btn_image": "back_cancel_arrow"
+            override fun onCreate(savedInstanceState: Bundle?) {  
+                super.onCreate(savedInstanceState)  
+                setContentView(R.layout.activity_launch)
              
-              }"))
-           }
-           
-   
-          // Signature result is received in onActivityResult and set this result to SDK 2.0 Api setSignatureData  
-          override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {  
-              data ?: return  
-              if (requestCode == SignatureConstants.SIGNATURE_CAPTURE_REQUEST_CODE) {
-                  var signatureData = data?.getStringExtra("SignatureImage")
-                  var signatureDataCoordinates = data?.getStringExtra("SignatureDataCoordinates")
-                  IdentityProofingSDK.setSignatureData(signatureData,signatureDataCoordinates)
-              } else if (requestCode == SignatureConstants.SIGNATURE_CANCEL_RESPONSE_CODE) {
-                  // cancelled by user
-                  IdentityProofingSDK.setSignatureData(null,null)
-              }
-          } 
-      ```
+                //SDK signature call
+                signatureCapture.setOnClickListener{
+                var doneBtnText = getString(R.string.done)
+                    var cancelBtnText = getString(R.string.clear)
+                    var signTitle = getString(R.string.sign_title)
+     
+                    SignatureSDK.captureSignature(this@LaunchActivity, JSONObject("{
+                    "signature_capture_screen_background_color": "#FFFFFF",
+                    "signature_capture_screen_box_border_color": "#000000",
+       
+                    "signature_stroke_color": "#0000FF",
+                    "signature_stroke_size": "20",
+     
+                    "signature_title_text": "Please Sign Below",
+                    "signature_title_text_color": "#0000FF",
+                    "signature_title_text_font": "font/custom_font.ttf",
+                    "signature_title_text_font_size": "20",
+             
+                    "signature_done_btn_text": "Done 1",
+                    "signature_done_btn_text_color": "#FFFFFF",
+                    "signature_done_btn_text_font_size": "20",
+                    "signature_done_btn_text_font": "font/custom_font.ttf",
+                    "signature_done_btn_background": "done_button",
+             
+                    "signature_clear_btn_text": "Clear 1",
+                    "signature_clear_btn_text_color": "#FF0000",
+                    "signature_clear_btn_text_font_size": "20",
+                    "signature_clear_btn_text_font": "font/custom_font.ttf",
+                    "signature_clear_btn_background": "cancel_button",
+             
+                    "signature_back_btn_tint_color": "#FF0000",
+                    "signature_back_btn_image": "back_cancel_arrow"
+               
+                }"))
+             }
+             
+     
+            // Signature result is received in onActivityResult and set this result to SDK 2.0 Api setSignatureData  
+            override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {  
+                data ?: return  
+                if (requestCode == SignatureConstants.SIGNATURE_CAPTURE_REQUEST_CODE) {
+                    var signatureData = data?.getStringExtra("SignatureImage")
+                    var signatureDataCoordinates = data?.getStringExtra("SignatureDataCoordinates")
+                    IdentityProofingSDK.setSignatureData(signatureData,signatureDataCoordinates)
+                } else if (requestCode == SignatureConstants.SIGNATURE_CANCEL_RESPONSE_CODE) {
+                    // cancelled by user
+                    IdentityProofingSDK.setSignatureData(null,null)
+                }
+            } 
+        ```
 
 ## Getting Started for Four Fingerprint Capture
 
@@ -698,65 +698,66 @@ The `IDCaptureCustomizationOptions` class contains settings specific to the docu
 
 #### 2.2 ID Capture Core Logic (`IDCaptureOptions`)
 
-| Field | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `documentFrameWidthRatio` | Float | 1.428 | Target aspect ratio for the document frame. |
-| `frontRealnessThreshold` | Float | 0.8 | Threshold for front ID realness detection. |
-| `backRealnessThreshold` | Float | 0.8 | Threshold for back ID realness detection. |
-| `frontDocumentConfidence` | Float | 0.7 | Classification confidence for front ID. |
-| `backDocumentConfidence` | Float | 0.7 | Classification confidence for back ID. |
-| `lowerWidthThresholdTolerance` | Float | 0.2 | Min width tolerance for auto-capture. |
-| `upperWidthThresholdTolerance` | Float | 0.05 | Max width tolerance for auto-capture. |
-| `focusThreshold` | Float | 0.98 | Minimum focus probability required. |
-| `fingerDetectionThreshold` | Float | 0.30 | Sensitivity for finger detection. |
-| `glareDetectionThreshold` | Float | 0.20 | Sensitivity for glare detection. |
-| `minMrzConfidence` | Float | 0.50 | Minimum MRZ reading confidence. |
-| `minBarcodeConfidence` | Float | 0.50 | Minimum barcode reading confidence. |
-| `documentBackComponentConfidence` | Float | 0.70 | Back component detection confidence. |
-| `allowOverrideWrongDocumentTypeAfterMs` | Long | 8000 | Timeout before allowing mismatch override. |
-| `wrongDocumentTypeHandlingMode` | Enum | MANUAL | `MANUAL_CAPTURE` or `AUTO_CAPTURE` logic. |
-| `wrongDocumentTypeWarningDelayInSec` | Int | 5 | Seconds before showing the warning label. |
-| `separateIdCardCaptureSequence` | Boolean | false | Toggles separate ID card preview flow. |
+| Field | Type | Default | Description                                                  |
+| :--- | :--- | :--- |:-------------------------------------------------------------|
+| `documentFrameWidthRatio` | Float | 1.428 | Target aspect ratio for the document frame.                  |
+| `frontRealnessThreshold` | Float | 0.8 | Threshold for front ID realness detection.                   |
+| `backRealnessThreshold` | Float | 0.8 | Threshold for back ID realness detection.                    |
+| `frontDocumentConfidence` | Float | 0.7 | Classification confidence for front ID.                      |
+| `backDocumentConfidence` | Float | 0.7 | Classification confidence for back ID.                       |
+| `lowerWidthThresholdTolerance` | Float | 0.2 | Min width tolerance for auto-capture.                        |
+| `upperWidthThresholdTolerance` | Float | 0.05 | Max width tolerance for auto-capture.                        |
+| `focusThreshold` | Float | 0.98 | Minimum focus probability required.                          |
+| `fingerDetectionThreshold` | Float | 0.30 | Sensitivity for finger detection.                            |
+| `glareDetectionThreshold` | Float | 0.20 | Sensitivity for glare detection.                             |
+| `minMrzConfidence` | Float | 0.50 | Minimum MRZ reading confidence.                              |
+| `minBarcodeConfidence` | Float | 0.50 | Minimum barcode reading confidence.                          |
+| `documentBackComponentConfidence` | Float | 0.70 | Back component detection confidence.                         |
+| `allowOverrideWrongDocumentTypeAfterMs` | Long | 8000 | Timeout before allowing mismatch override.                   |
+| `wrongDocumentTypeHandlingMode` | Enum | MANUAL | `MANUAL_CAPTURE` or `AUTO_CAPTURE` or `EXIT` logic. |
+| `wrongDocumentTypeWarningDelayInSec` | Int | 5 | Seconds before showing the warning label.                    |
+| `separateIdCardCaptureSequence` | Boolean | false | Toggles separate ID card preview flow.                       |
 
 #### 2.2 ID Strings & Prompts (`IDStringOptions`)
 
-| Field | Description |
-| :--- | :--- |
-| `captureScreenFrontIDLabel` | Custom label for "Scan the Front of your ID". |
-| `captureScreenBackIDLabel` | Custom label for "Scan the Back of your ID". |
-| `captureScreenBarcodeLabel` | Custom label for "Scan the Barcode on the Back...". |
-| `captureScreenDocumentCaptureLabel` | Custom label for generic "Frame Your Document" screens. |
-| `captureScreenError` | Toast message shown when face/text detection fails. |
-| `captureScreenBarcodeError` | Toast message shown when barcode detection fails. |
-| `moveCloser` / `moveAway` | Feedback prompts for document distance adjustment. |
-| `alignRectangle` | Prompt for manual alignment inside the capture frame. |
-| `useFront` / `useBack` | Orientation prompts for the document sides. |
-| `makeSurePhotoTextVisible` | General visibility instruction text. |
-| `scanBarcode` / `makeSureBarcodeVisible` | Specific instructions for barcode capture fallback. |
-| `frontBackMismatch` | Mismatch warning header text. |
-| `flipToBack` | Prompt text instructing the user to flip the ID. |
-| `tooMuchGlare` / `tooMuchDark` / `tooBlurry` | Real-time quality feedback prompts. |
-| `retryScreenLabelText` | Main error message on the Retry screen. |
-| `retryButtonText` | Label for the retry action button. |
-| `retryScreenCancelButtonText` | Label for the cancel/exit button on retry screen. |
-| `idInstructionText` | Title/Header on the pre-capture instruction screen. |
-| `idInstructionScreenButtonText` | Label for the "Continue" button on instruction screen. |
-| `documentInstructionText` | Alternative instruction text for document flows. |
-| `captureScreenCancelBtnText` | Toolbar cancel button text. |
-| `documentDetectedIdHoldText` | Post-detection "Hold still" instruction. |
+| Field | Description                                                   |
+| :--- |:--------------------------------------------------------------|
+| `captureScreenFrontIDLabel` | Custom label for "Scan the Front of your ID".                 |
+| `captureScreenBackIDLabel` | Custom label for "Scan the Back of your ID".                  |
+| `captureScreenBarcodeLabel` | Custom label for "Scan the Barcode on the Back...".           |
+| `captureScreenDocumentCaptureLabel` | Custom label for generic "Frame Your Document" screens.       |
+| `captureScreenError` | Toast message shown when face/text detection fails.           |
+| `captureScreenBarcodeError` | Toast message shown when barcode detection fails.             |
+| `moveCloser` / `moveAway` | Feedback prompts for document distance adjustment.            |
+| `alignRectangle` | Prompt for manual alignment inside the capture frame.         |
+| `useFront` / `useBack` | Orientation prompts for the document sides.                   |
+| `makeSurePhotoTextVisible` | General visibility instruction text.                          |
+| `scanBarcode` / `makeSureBarcodeVisible` | Specific instructions for barcode capture fallback.           |
+| `frontBackMismatch` | Mismatch warning header text.                                 |
+| `flipToBack` | Prompt text instructing the user to flip the ID.              |
+| `tooMuchGlare` / `tooMuchDark` / `tooBlurry` | Real-time quality feedback prompts.                           |
+| `retryScreenLabelText` | Main error message on the Retry screen.                       |
+| `retryButtonText` | Label for the retry action button.                            |
+| `retryScreenCancelButtonText` | Label for the cancel/exit button on retry screen.             |
+| `idInstructionText` | Title/Header on the pre-capture instruction screen.           |
+| `idInstructionScreenButtonText` | Label for the "Continue" button on instruction screen.        |
+| `documentInstructionText` | Alternative instruction text for document flows.              |
+| `captureScreenCancelBtnText` | Toolbar cancel button text.                                   |
+| `documentDetectedIdHoldText` | Post-detection "Hold still" instruction.                      |
 | `incorrectDocumentSideBackText` | Alert message when identifying a Front when Back is expected. |
 | `incorrectDocumentSideFrontText`| Alert message when identifying a Back when Front is expected. |
-| `autofillInstructionsText` | Guidance for the autofill/OCR data extraction sequence. |
-| `alignDocumentText` | Persistent instruction to align the document. |
-| `fingerDetectedOnIdText` | Floating warning when a finger obscures the ID. |
-| `glareDetectedOnIdText` | Floating warning when light glare obscures the ID. |
-| `idCaptureWarningMessage` | Message shown on the yellow tooltip for side-mismatch. |
-| `idCaptureFrontWarningMessage` | Message specifically for unexpected front side detection. |
-| `captureAnywayButtonText` | Override button text in manual mismatch handling mode. |
-| `previewScreenTitleIdFront` | Navigation title shown after successful Front ID capture. |
-| `previewScreenTitleIdBack` | Navigation title shown after successful Back ID capture. |
-| `previewScreenRetryBtnText` | Text for the retry action on confirmation screen. |
-| `previewScreenDoneBtnText` | Text for the "Proceed/Done" action on confirmation screen. |
+| `autofillInstructionsText` | Guidance for the autofill/OCR data extraction sequence.       |
+| `alignDocumentText` | Persistent instruction to align the document.                 |
+| `fingerDetectedOnIdText` | Floating warning when a finger obscures the ID.               |
+| `glareDetectedOnIdText` | Floating warning when light glare obscures the ID.            |
+| `idCaptureWarningMessage` | Message shown on the yellow tooltip for side-mismatch.        |
+| `idCaptureFrontWarningMessage` | Message specifically for unexpected front side detection.     |
+| `captureAnywayButtonText` | Override button text in manual mismatch handling mode.        |
+| `exitButtonText` | Override button text in manual mismatch exit mode.            |
+| `previewScreenTitleIdFront` | Navigation title shown after successful Front ID capture.     |
+| `previewScreenTitleIdBack` | Navigation title shown after successful Back ID capture.      |
+| `previewScreenRetryBtnText` | Text for the retry action on confirmation screen.             |
+| `previewScreenDoneBtnText` | Text for the "Proceed/Done" action on confirmation screen.    |
 
 #### 2.3 ID Visuals & Colors (`IDColorOptions`)
 
@@ -792,6 +793,8 @@ The `IDCaptureCustomizationOptions` class contains settings specific to the docu
 | `warningLabelTextColor` | Text color for side-mismatch yellow alerts. |
 | `captureAnywayButtonColor` | Background color for the mismatch override button. |
 | `captureAnywayButtonTextColor` | Text color for the mismatch override button. |
+| `exitButtonColor` | Background color for the mismatch exit button. |
+| `exitButtonTextColor` | Text color for the mismatch exit button. |
 | `progressBarColor` | Color for the animated auto-capture progress circle. |
 | `previewScreenBackgroundColor` | Overall background of the post-capture preview screen. |
 | `previewScreenTopViewBgColor` | Toolbar background on the preview screen. |
@@ -803,26 +806,27 @@ The `IDCaptureCustomizationOptions` class contains settings specific to the docu
 
 #### 2.4 ID Typography (`IDFontOptions`)
 
-| Field | Description |
-| :--- | :--- |
-| `captureScreenFrontIDTextFont` | Font resource (`R.font.*`) for front side labels. |
-| `captureScreenFrontIDTextFontSize` | Font size (SP) for front side labels. |
-| `captureScreenBackIDTextFont` | Font resource (`R.font.*`) for back side labels. |
-| `captureScreenBackIDTextFontSize` | Font size (SP) for back side labels. |
-| `captureScreenDocumentCaptureTextFont` | Font resource (`R.font.*`) for document labels. |
-| `captureScreenDocumentCaptureTextFontSize`| Font size (SP) for document labels. |
-| `labelFont` / `labelFontSize` | Default typography for instruction text. |
-| `labelPromptFont` / `FontSize` | Default typography for floating user prompts. |
-| `instructionScreenLabelFont` / `Size` | Typography for body text on instruction screen. |
-| `instructionScreenButtonFont` / `Size` | Typography for the primary button on instructions. |
-| `retryScreenLabelTextFont` / `Size` | Typography for main error labels on retry screens. |
-| `retryScreenDoneButtonFont` / `Size` | Typography for the "Done" button on retry screens. |
+| Field | Description                                         |
+| :--- |:----------------------------------------------------|
+| `captureScreenFrontIDTextFont` | Font resource (`R.font.*`) for front side labels.   |
+| `captureScreenFrontIDTextFontSize` | Font size (SP) for front side labels.               |
+| `captureScreenBackIDTextFont` | Font resource (`R.font.*`) for back side labels.    |
+| `captureScreenBackIDTextFontSize` | Font size (SP) for back side labels.                |
+| `captureScreenDocumentCaptureTextFont` | Font resource (`R.font.*`) for document labels.     |
+| `captureScreenDocumentCaptureTextFontSize`| Font size (SP) for document labels.                 |
+| `labelFont` / `labelFontSize` | Default typography for instruction text.            |
+| `labelPromptFont` / `FontSize` | Default typography for floating user prompts.       |
+| `instructionScreenLabelFont` / `Size` | Typography for body text on instruction screen.     |
+| `instructionScreenButtonFont` / `Size` | Typography for the primary button on instructions.  |
+| `retryScreenLabelTextFont` / `Size` | Typography for main error labels on retry screens.  |
+| `retryScreenDoneButtonFont` / `Size` | Typography for the "Done" button on retry screens.  |
 | `retryScreenRetryButtonFont` / `Size` | Typography for the "Retry" button on retry screens. |
-| `warningLabelFont` / `FontSize` | Typography for side-mismatch floating alerts. |
-| `captureAnywayButtonTextFont` / `Size`| Typography for the override button text. |
-| `previewScreenTitleFont` / `FontSize` | Typography for the post-capture success title. |
-| `previewScreenRetryBtnFont` / `Size` | Typography for the confirmation retry button. |
-| `previewScreenDoneBtnFont` / `Size` | Typography for the confirmation done button. |
+| `warningLabelFont` / `FontSize` | Typography for side-mismatch floating alerts.       |
+| `captureAnywayButtonTextFont` / `Size`| Typography for the override button text.            |
+| `exitButtonTextFont` / `Size`| Typography for the exit button text.                |
+| `previewScreenTitleFont` / `FontSize` | Typography for the post-capture success title.      |
+| `previewScreenRetryBtnFont` / `Size` | Typography for the confirmation retry button.       |
+| `previewScreenDoneBtnFont` / `Size` | Typography for the confirmation done button.        |
 
 #### 2.5 ID Images & Icons (`IDImageOptions`)
 
@@ -931,6 +935,7 @@ private fun getCompleteSdkCustomization(): SDKCustomizationOptions {
                 progressBarColor = "#4CAF50"
                 previewScreenBackgroundColor = "#F0F0F0"
                 captureAnywayButtonColor = "#2196F3"
+                exitButtonColor = "#2196F3"
             }
             // Typography (SP sizes and Font Resources)
             fontOptions.apply {
@@ -1078,7 +1083,7 @@ If you use ProGuard or R8 for code obfuscation and shrinking, add the following 
 ```
 
 ## SDK Version History
-#### v11.1.07.2.20 (28th April 2026)
+#### v11.1.07.2.23 (28th April 2026)
 * Added customizable properties
 * Updated DocumentDetect model with ID back-side prediction
 * Reduced overall SDK package size
@@ -1186,8 +1191,8 @@ If you use ProGuard or R8 for code obfuscation and shrinking, add the following 
 * Updated focus model to be downloaded from server and updated
 * default focus threshold.
 * Updated UI elements to allow for customization by integrator - all UI elements are now customizable.
-  - Instruction Screen button text and colors
-  - Instruction text and colors
+    - Instruction Screen button text and colors
+    - Instruction text and colors
 * Enhancements added to improve handling of Video ID
 
 ##### v9.4.8.2.15
