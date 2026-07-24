@@ -192,32 +192,32 @@ The SDK requires the following permissions and features to be declared in your `
 
     //IdentityMedium SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdk:11.1.07.2.23'     
+         implementation 'com.idmission.sdk2:idmission-mediumsdk:11.1.13.2.18'     
     }
 
     //IdentityMediumWithoutModels SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:11.1.07.2.23'     
+         implementation 'com.idmission.sdk2:idmission-mediumsdkwithoutmodels:11.1.13.2.18'     
     }
     
     //IdentityLite SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-litesdk:11.1.07.2.23'     
+         implementation 'com.idmission.sdk2:idmission-litesdk:11.1.13.2.18'     
     }
 
     //IdentityLiteWithoutModels SDK
     dependencies {  
-         implementation 'com.idmission.sdk2:idmission-litesdkwithoutmodels:11.1.07.2.23'     
+         implementation 'com.idmission.sdk2:idmission-litesdkwithoutmodels:11.1.13.2.18'     
     }
     
     //IdentityLiveness SDK
     dependencies {  
-    implementation 'com.idmission.sdk2:idmission-livenesssdk:11.1.07.2.23'     
+    implementation 'com.idmission.sdk2:idmission-livenesssdk:11.1.13.2.18'     
     }
 
     //IdentityLivenessWithoutModels SDK
     dependencies {  
-        implementation 'com.idmission.sdk2:idmission-livenesssdkwithoutmodels:11.1.07.2.23'     
+        implementation 'com.idmission.sdk2:idmission-livenesssdkwithoutmodels:11.1.13.2.18'     
     }
     ```
 
@@ -1083,6 +1083,22 @@ If you use ProGuard or R8 for code obfuscation and shrinking, add the following 
 ```
 
 ## SDK Version History
+#### v11.1.13.2.18 (23rd July 2026)
+* Added a maximum retry limit for ID and selfie capture.
+* Added a conditional ID success preview screen.
+* Added a conditional selfie success preview screen.
+* Added a barcode cropping support.
+* Added a barcode recovery flow.
+* Added on-device AAMVA parsing.
+* Added support for mandatory geolocation enforcement.
+* Added support for vertical ID capture orientation.
+* Implemented image sequence animations for the Vertical ID capture instruction screen.
+* Implemented image sequence animations for the ID capture instruction screen.
+* Removed glasses detection from the Android Liveness module.
+* Fixed an issue where the larger selfie image size on Pixel 8 devices caused increased upload time.
+* Updated Android SDK 2.0 to prevent uploading screen and photocopy images to GTE when the Real ID Check is disabled.
+* Updated the SDK initialization endpoint.
+
 #### v11.1.07.2.23 (28th April 2026)
 * Added customizable properties
 * Updated DocumentDetect model with ID back-side prediction
